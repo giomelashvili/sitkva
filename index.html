@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ka">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#D6F0F7">
+<title>Sitkva</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- 00 onboarding -->
+<section id="s-onboarding" class="screen scroll parent">
+  <div class="wrap">
+    <form class="onb" id="onb-form" autocomplete="off">
+      <div><div class="kicker">პირველი გაშვება · ნაბიჯი 1 / 2</div><h1>გავიცნოთ ბავშვი</h1>
+        <div class="small">ამ სახელის ქვეშ შეინახება ყველა სესია და სტატისტიკა. მონაცემები მხოლოდ ამ მოწყობილობაზე რჩება.</div></div>
+      <label>ბავშვის სახელი<input id="onb-name" name="name" type="text" required maxlength="30" placeholder="მაგ. ნიკა"></label>
+      <div><div class="kicker">სქესი</div><div class="choicebtns" id="onb-gender"><button type="button" data-v="boy">ბიჭი</button><button type="button" data-v="girl">გოგო</button></div></div>
+      <div class="grid2">
+        <label>დაბადების თარიღი<input id="onb-birth" name="birth" type="date" required></label>
+        <label>ასაკი<input id="onb-age" type="text" readonly value="—"></label>
+      </div>
+      <div class="grid2">
+        <div><div class="kicker">ძირითადი ენა</div><div class="choicebtns" id="onb-lang"><button type="button" data-v="ka" class="on">ქართული</button><button type="button" data-v="ru">რუსული</button></div></div>
+        <div><div class="kicker">მეორე ენა</div><div class="choicebtns" id="onb-lang2"><button type="button" data-v="en">ინგლისური</button><button type="button" data-v="ru">რუსული</button><button type="button" data-v="none" class="on">არა</button></div></div>
+      </div>
+      <label>მშობლის PIN (4 ციფრი)<input id="onb-pin" name="pin" type="text" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" value="1234"></label>
+      <div class="row between"><div class="small">შემდეგი ნაბიჯი: ხმის ჩაწერა და ფოტოების დამატება მშობლის პანელში</div><button class="btn teal" type="submit" id="onb-submit">შემდეგი</button></div>
+    </form>
+  </div>
+</section>
+
+<!-- 01 home (parent-facing start) -->
+<section id="s-home" class="screen scroll child">
+  <svg class="bg" viewBox="0 0 1024 768" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><g class="clouds" fill="#fff" opacity="0.9"><ellipse cx="170" cy="120" rx="74" ry="28"/><ellipse cx="214" cy="102" rx="46" ry="32"/><ellipse cx="820" cy="90" rx="64" ry="24"/><ellipse cx="858" cy="74" rx="40" ry="28"/></g><path d="M0 600 C 180 530, 340 556, 520 604 S 860 548, 1024 592 L1024 768 L0 768 Z" fill="#B7E2C2"/><path d="M0 664 C 220 616, 420 646, 600 688 S 900 646, 1024 672 L1024 768 L0 768 Z" fill="#9AD3AA"/></svg>
+  <div class="topbar"><div class="bubble" id="home-next"></div><button class="lock" id="lock-home" aria-label="მშობლის რეჟიმი"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></button></div>
+  <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; z-index:2;">
+    <div id="home-chiku" class="chiku-slot" style="position:static"></div>
+    <div class="bigword" style="position:static" id="home-title">სიტყვა</div>
+    <div class="home-card" style="max-width:560px; width:90%">
+      <div class="kicker">დღევანდელი სიტყვები</div>
+      <div class="wordlist" id="home-words"></div>
+      <div class="small" id="home-rules" style="margin-top:10px"></div>
+    </div>
+    <button class="btn teal big" id="btn-start"><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5l11 6.5-11 6.5z" fill="#fff" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg>დავიწყოთ</button>
+  </div>
+</section>
+
+<!-- 02 character choice -->
+<section id="s-choice" class="screen child">
+  <svg class="bg" viewBox="0 0 1024 768" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><g class="clouds" fill="#fff" opacity="0.9"><ellipse cx="170" cy="120" rx="74" ry="28"/><ellipse cx="214" cy="102" rx="46" ry="32"/><ellipse cx="820" cy="90" rx="64" ry="24"/><ellipse cx="858" cy="74" rx="40" ry="28"/></g><path d="M0 600 C 180 530, 340 556, 520 604 S 860 548, 1024 592 L1024 768 L0 768 Z" fill="#B7E2C2"/><path d="M0 664 C 220 616, 420 646, 600 688 S 900 646, 1024 672 L1024 768 L0 768 Z" fill="#9AD3AA"/></svg>
+  <div class="topbar"><span></span><button class="lock" data-lock aria-label="მშობლის რეჟიმი"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></button></div>
+  <div class="cards three" id="choice-cards"></div>
+  <div class="chiku-slot" style="left:4%; bottom:4%" id="choice-chiku"></div>
+  <div class="center" style="left:26%; bottom:22%; justify-content:flex-start"><div class="bubble"><svg viewBox="0 0 24 24" fill="none" stroke="#2E8FA3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg><span>„ვის ვუყუროთ?“</span></div></div>
+</section>
+
+<!-- 03/04/05 trial -->
+<section id="s-trial" class="screen child">
+  <svg class="bg" viewBox="0 0 1024 768" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><g class="clouds" fill="#fff" opacity="0.9"><ellipse cx="840" cy="96" rx="64" ry="24"/><ellipse cx="878" cy="80" rx="40" ry="28"/></g><path d="M0 600 C 180 530, 340 556, 520 604 S 860 548, 1024 592 L1024 768 L0 768 Z" fill="#B7E2C2"/><path d="M0 664 C 220 616, 420 646, 600 688 S 900 646, 1024 672 L1024 768 L0 768 Z" fill="#9AD3AA"/></svg>
+  <div class="topbar"><div class="progress" id="trial-progress" aria-label="ცდები"></div><button class="lock" data-lock aria-label="მშობლის რეჟიმი"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></button></div>
+  <div class="center" style="top:16px"><div class="chiku-slot" style="position:static" id="trial-chiku"></div><div class="bubble" id="trial-bubble"><svg viewBox="0 0 24 24" fill="none" stroke="#2E8FA3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg><span id="trial-word"></span></div></div>
+  <div class="cards two" id="trial-cards"></div>
+  <div class="caption"><span id="trial-caption">შეხება იხსნება ხმის შემდეგ</span></div>
+</section>
+
+<!-- 06 real object -->
+<section id="s-real" class="screen child">
+  <svg class="bg" viewBox="0 0 1024 768" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><g class="clouds" fill="#fff" opacity="0.9"><ellipse cx="840" cy="96" rx="64" ry="24"/><ellipse cx="878" cy="80" rx="40" ry="28"/></g><path d="M0 470 C 180 410, 340 430, 520 470 S 860 420, 1024 460 L1024 768 L0 768 Z" fill="#B7E2C2"/></svg>
+  <div class="topbar"><div class="progress" id="real-progress"></div><span class="bubble" style="font-size:14px">ეკრანი პაუზაზეა · 20–30 წამი</span></div>
+  <div class="center" style="top:14%"><div class="chiku-slot" style="position:static" id="real-chiku"></div><div class="card" style="width:30vh; height:30vh; min-height:200px" id="real-card"><div class="inner"></div></div></div>
+  <div class="panel"><div class="text"><div class="kicker">მშობელს</div><div class="title" id="real-title"></div><div class="sub">მიწვდენა, ჩვენება, ჟესტი ან ბგერა მცდელობაა: მიეცი საგანი</div></div>
+    <button class="btn" id="real-tried">სცადა თავად</button><button class="btn secondary" id="real-notyet">ჯერ არა</button></div>
+</section>
+
+<!-- 07 reward -->
+<section id="s-reward" class="screen child">
+  <svg class="bg" viewBox="0 0 1024 768" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><path d="M0 600 C 180 530, 340 556, 520 604 S 860 548, 1024 592 L1024 768 L0 768 Z" fill="#B7E2C2"/><path d="M0 664 C 220 616, 420 646, 600 688 S 900 646, 1024 672 L1024 768 L0 768 Z" fill="#9AD3AA"/></svg>
+  <div class="topbar"><div class="progress" id="reward-progress"></div><span class="bubble" style="font-size:14px" id="reward-label"></span></div>
+  <div class="tv"><div class="screen-inner" id="reward-screen"></div><div class="bar"><div id="reward-bar"></div></div></div>
+  <div class="chiku-slot" style="right:3%; bottom:8%" id="reward-chiku"></div>
+</section>
+
+<!-- 08 done -->
+<section id="s-done" class="screen child warm">
+  <svg class="bg" viewBox="0 0 1024 768" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><circle cx="512" cy="600" r="210" fill="#F9D9A6"/><g class="clouds" fill="#fff" opacity="0.8"><ellipse cx="190" cy="140" rx="74" ry="26"/><ellipse cx="232" cy="122" rx="44" ry="30"/><ellipse cx="830" cy="170" rx="60" ry="22"/></g><path d="M0 590 C 180 530, 340 556, 520 600 S 860 548, 1024 588 L1024 768 L0 768 Z" fill="#B7E2C2"/><path d="M0 660 C 220 616, 420 646, 600 686 S 900 646, 1024 670 L1024 768 L0 768 Z" fill="#9AD3AA"/></svg>
+  <div class="center" style="top:28px"><div class="progress" id="done-progress"></div></div>
+  <div class="center" style="top:16%; flex-direction:column; gap:6px"><div class="chiku-slot" style="position:static" id="done-chiku"></div><div class="bigword" style="position:static">მორჩა</div><div class="bubble" id="done-bubble">„მორჩა. ახლა ერთად ვითამაშოთ.“</div></div>
+  <div class="panel hidden" id="done-panel"><div class="text"><div class="kicker">მშობელს · სესია დასრულდა</div><div class="title" id="done-title"></div><div class="sub" id="done-sub"></div></div>
+    <div id="done-buttons" class="row"></div></div>
+</section>
+
+<!-- PIN -->
+<div class="pinpad" id="pinpad" role="dialog" aria-label="მშობლის PIN">
+  <div class="pinbox"><div class="kicker">მშობლის რეჟიმი</div><div style="font-weight:800; font-size:20px; margin-top:4px">შეიყვანე PIN</div>
+    <div class="pindots" id="pindots"><i></i><i></i><i></i><i></i></div>
+    <div class="keys" id="pinkeys"></div>
+    <div class="small danger hidden" id="pin-error">არასწორი PIN</div>
+    <button class="tab" id="pin-cancel" style="margin-top:12px">გაუქმება</button></div>
+</div>
+
+<!-- parent panel -->
+<section id="s-parent" class="screen scroll parent">
+  <div class="wrap">
+    <div class="row between"><div><div class="kicker">მშობლის რეჟიმი</div><h1 id="parent-title">ადმინისტრირების პანელი</h1></div>
+      <div class="row"><button class="tab" id="btn-child">ბავშვის ეკრანზე</button></div></div>
+    <div class="tabs" id="tabs">
+      <button class="tab on" data-tab="today">დღეს</button><button class="tab" data-tab="stats">სტატისტიკა</button><button class="tab" data-tab="words">სიტყვები</button>
+      <button class="tab" data-tab="library">ჯილდო</button><button class="tab" data-tab="calendar">კალენდარი</button><button class="tab" data-tab="questions">კითხვები</button>
+      <button class="tab" data-tab="suggestions">შეთავაზებები</button><button class="tab" data-tab="settings">პარამეტრები</button>
+    </div>
+    <div id="tab-today"></div><div id="tab-stats" class="hidden"></div><div id="tab-words" class="hidden"></div><div id="tab-library" class="hidden"></div>
+    <div id="tab-calendar" class="hidden"></div><div id="tab-questions" class="hidden"></div><div id="tab-suggestions" class="hidden"></div><div id="tab-settings" class="hidden"></div>
+  </div>
+</section>
+
+<div class="toast" id="toast" role="status"></div>
+<script type="module" src="app.js"></script>
+</body>
+</html>
